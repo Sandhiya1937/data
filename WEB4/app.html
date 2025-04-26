@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport"
+content="width=device-width, initial-scale=1.0" />
+<title>Online Banking</title>
+<style>
+body { font-family: Arial; background: #eef; padding: 20px; text-align:
+center; }
+#login, #dash { max-width: 400px; margin: auto; padding: 20px;
+background: #fff; border-radius: 8px; }
+input, button { width: 100%; margin: 10px 0; padding: 10px; font-size:
+16px; }
+#dash { display: none; }
+.btn { background: #28a745; color: #fff; border: none; cursor: pointer; }
+.danger { background: #dc3545; }
+ul { list-style: none; padding: 0; text-align: left; }
+</style>
+</head>
+<body>
+<h1>Online Banking</h1>
+<div id="login">
+<input id="user" placeholder="Username"><input id="pass"
+type="password" placeholder="Password">
+<button class="btn" onclick="login()">Login</button>
+</div>
+<div id="dash">
+<h2>Welcome, <span id="name"></span></h2>
+<h3>Balance: $<span id="bal">1000</span></h3>
+<input id="amt" type="number" placeholder="Enter amount">
+<button class="btn" onclick="act(1)">Deposit</button>
+<button class="btn danger" onclick="act(-1)">Withdraw</button>
+<h4>Transactions:</h4>
+<ul id="log"></ul>
+<button onclick="location.reload()">Logout</button>
+</div>
+<script>
+let bal = 1000;
+const $ = id => document.getElementById(id);
+function login() {
+if ($('user').value && $('pass').value) {
+$('login').style.display = 'none';
+$('dash').style.display = 'block';
+$('name').textContent = $('user').value;
+} else alert("Enter login info");
+}
+function act(type) {
+const v = parseFloat($('amt').value);
+if (!v || (type < 0 && v > bal)) return alert("Invalid amount");
+bal += type * v;
+$('bal').textContent = bal.toFixed(2);
+const li = document.createElement('li');
+li.textContent = (type > 0 ? 'Deposited' : 'Withdrew') + ` $${v}`;
+$('log').prepend(li);
+$('amt').value = '';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+exp 2                                        index.html
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Rock Paper Scissors</h1>
+  <div class="game-container" id="game">
+    <p>Choose your weapon:</p>
+    <div class="choices">
+      <button onclick="play('rock')">🪨 Rock</button>
+      <button onclick="play('paper')">📄 Paper</button>
+      <button onclick="play('scissors')">✂ Scissors</button>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+🎨 style.css
+css
+Copy code
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+h1 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.game-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.choices button {
+  margin: 10px;
+  padding: 15px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #5dade2;
+  color: white;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.choices button:hover {
+  background-color: #3498db;
+  transform: scale(1.05);
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+⚙ script.js
+javascript
+Copy code
+function play(playerChoice) {
+  const choices = ['rock', 'paper', 'scissors'];
+  if (!choices.includes(playerChoice)) {
+    document.getElementById("result").textContent = "Invalid choice!";
+    return;
+  }
+
+  const computerChoice = choices[Math.floor(Math.random() * 3)];
+  let resultText = `You chose ${playerChoice}. Computer chose ${computerChoice}. `;
+
+  if (playerChoice === computerChoice) {
+    resultText += "It's a draw!";
+  } else if (
+    (playerChoice === "rock" && computerChoice === "scissors") ||
+    (playerChoice === "paper" && computerChoice === "rock") ||
+    (playerChoice === "scissors" && computerChoice === "paper")
+  ) {
+    resultText += "You win! 🎉";
+  } else {
+    resultText += "You lose! 😢";
+  }
+
+  const resultEl = document.getElementById("result");
+  resultEl.textContent = resultText;
+
+  // Add animation to result
+  const game = document.getElementById("game");
+  game.classList.remove("shake"); // reset
+  void game.offsetWidth; // trigger reflow
+  game.classList.add("shake");
+}

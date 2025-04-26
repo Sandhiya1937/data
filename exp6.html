@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat App</title>
+<style>
+body { font-family: Arial, sans-serif; background-color: skyblue; }
+#chat { max-width: 600px; margin: auto; background-color: white;
+padding: 10px; border-radius: 5px; }
+#messages { border: 1px solid #ccc; padding: 5px; height: 300px;
+overflow-y: scroll; }
+input, button { padding: 5px; margin-top: 5px; width: 100%; }
+button { background-color: #28a745; color: white; border: none; cursor:
+pointer; }
+</style>
+</head>
+<body>
+<div id="chat">
+<h2>Chat Room</h2>
+<div id="messages"></div>
+<input type="text" id="message" placeholder="Type a message...">
+<button onclick="sendMessage()">Send</button>
+</div>
+<script>
+const messagesDiv = document.getElementById('messages');
+function appendMessage(sender, msg) {
+const p = document.createElement('p');
+p.innerHTML = `<strong>${sender}:</strong> ${msg}`;
+messagesDiv.appendChild(p);
+messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+function getBotResponse(message) {
+const lowerMsg = message.toLowerCase();
+if (lowerMsg.includes('hello')) return 'Hi there!';
+if (lowerMsg.includes('how are you')) return "I'm fine!";
+if (lowerMsg.includes('bye')) return 'Goodbye!';
+return "I don't understand.";
+}
+function sendMessage() {
+const messageInput = document.getElementById('message');
+const userMessage = messageInput.value;
+if (!userMessage.trim()) return;
+appendMessage('You', userMessage);
+setTimeout(() => appendMessage('Bot', getBotResponse(userMessage)),
+500);
+messageInput.value = '';
+}
+</script>
+</body>
+</html>
